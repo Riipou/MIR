@@ -120,6 +120,22 @@ def generateLBP(filenames, progressBar):
         progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
         i += 1
     print("indexation LBP terminée !!!!")
+
+def generateHOG(filenames, progressBar):
+    target_size = (600, 400)
+    if not os.path.isdir("HOG"):
+        os.mkdir("HOG")
+    i = 0
+    for path in os.listdir(filenames):
+        img = cv2.imread(filenames + "/" + path)
+        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
+            img=resize(img, target_size)
+        descrip1, hog_image = hog(img, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2),visualize=True, multichannel=True)
+        num_image, _ = path.split(".")
+        np.savetxt("HOG/" + str(num_image) + ".txt", descrip1)
+        progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
+        i += 1
+    print("indexation LBP terminée !!!!")
 	
 def extractReqFeatures(fileName,algo_choice):
     target_size=(600,400)
@@ -157,6 +173,9 @@ def extractReqFeatures(fileName,algo_choice):
             lbp_features = des.flatten()
             vect_features = np.array(lbp_features)
             print(vect_features)
+        elif algo_choice==6 : #HOG
+            # Calculer le descripteur HOG et obtenir l'image HOG
+            vect_features, hog_image = hog(img, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True, multichannel=True)
 
 			
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,vect_features)
