@@ -328,6 +328,9 @@ class Ui_MainWindow(object):
         if self.checkBox_HOG.isChecked():
             folder_model = './HOG'
             self.algo_choice = 6
+        if self.checkBox_GLCM.isChecked():
+            folder_model = './GLCM'
+            self.algo_choice = 7
         for i in reversed(range(self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         if filenames:
@@ -351,7 +354,7 @@ class Ui_MainWindow(object):
             self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
             pas += 1
             self.progressBar.setValue(int(100 * ((pas+1) / 10000)))
-        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_LBP.isChecked() and not self.checkBox_HOG.isChecked():
+        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_LBP.isChecked() and not self.checkBox_HOG.isChecked() and not self.checkBox_GLCM.isChecked():
             print("Merci de sélectionner au moins un descripteur dans le menu")
             showDialog()
 

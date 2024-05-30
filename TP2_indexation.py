@@ -19,7 +19,7 @@ from skimage.io import imread
 from skimage.feature import hog
 from skimage import exposure
 from matplotlib import pyplot as plt
-from functions import showDialog, generateSIFT, generateHistogramme_HSV, generateHistogramme_Color, generateORB,generateLBP,generateHOG
+from functions import showDialog, generateSIFT, generateHistogramme_HSV, generateHistogramme_Color, generateORB,generateLBP,generateHOG,generateGLCM
 import time
 
 class Ui_MainWindow(object):
@@ -213,8 +213,17 @@ class Ui_MainWindow(object):
             # Afficher le temps écoulé dans le terminal
             print("Temps d'exécution HOG : {:.2f} secondes".format(temps_ecoule))
 
+        if self.Dossier_images and self.checkBox_GLCM.isChecked():
+            temps_debut = time.time()
+            generateGLCM(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution GLCM : {:.2f} secondes".format(temps_ecoule))
+
         
-        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_LBP.isChecked() and not self.checkBox_HOG.isChecked():
+        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_LBP.isChecked() and not self.checkBox_HOG.isChecked() and not self.checkBox_GLCM.isChecked():
             print("Merci de selectionner un descripteur via le Menu  ...")
             showDialog()
 

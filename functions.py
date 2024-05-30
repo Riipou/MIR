@@ -135,7 +135,27 @@ def generateHOG(filenames, progressBar):
         np.savetxt("HOG/" + str(num_image) + ".txt", descrip1)
         progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
         i += 1
-    print("indexation LBP terminée !!!!")
+    print("indexation HOG terminée !!!!")
+
+def generateGLCM(filenames, progressBar):
+    target_size = (600, 400)
+    if not os.path.isdir("GLCM"):
+        os.mkdir("GLCM")
+    i = 0
+    for path in os.listdir(filenames):
+        img = cv2.imread(filenames + "/" + path)
+        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
+            img=resize(img, target_size)
+        if img.dtype == np.float64:
+            img = (img * 255).astype(np.uint8)
+        image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        glcm = greycomatrix(image, distances=[1], angles= [0, np.pi / 4, np.pi / 2, 3 * np.pi / 4], symmetric = True, normed = True)
+        descrip1 = glcm.flatten()
+        num_image, _ = path.split(".")
+        np.savetxt("GLCM/" + str(num_image) + ".txt", descrip1)
+        progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
+        i += 1
+    print("indexation GLCM terminée !!!!")
 	
 def extractReqFeatures(fileName,algo_choice):
     target_size=(600,400)
@@ -176,8 +196,13 @@ def extractReqFeatures(fileName,algo_choice):
         elif algo_choice==6 : #HOG
             # Calculer le descripteur HOG et obtenir l'image HOG
             vect_features, hog_image = hog(img, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True, multichannel=True)
-
-			
+        elif algo_choice==7 : #GLCM
+            # Calculer le descripteur GLCM et
+            if img.dtype == np.float64:
+                img = (img * 255).astype(np.uint8)
+            image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            glcm = greycomatrix(image, distances=[1], angles=[0, np.pi / 4, np.pi / 2, 3 * np.pi / 4], symmetric=True, normed=True)
+            vect_features=glcm.flatten()
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,vect_features)
         print("saved")
         #print("vect_features", vect_features)
