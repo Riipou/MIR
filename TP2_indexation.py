@@ -19,7 +19,7 @@ from skimage.io import imread
 from skimage.feature import hog
 from skimage import exposure
 from matplotlib import pyplot as plt
-from functions import showDialog, generateSIFT, generateHistogramme_HSV, generateHistogramme_Color, generateORB
+from functions import showDialog, generateSIFT, generateHistogramme_HSV, generateHistogramme_Color, generateORB,generateLBP
 import time
 
 class Ui_MainWindow(object):
@@ -166,6 +166,7 @@ class Ui_MainWindow(object):
         
 		# Appel de la fonction de calcul de l'histogramme de couleur HSV
         if self.Dossier_images and self.checkBox_HSV.isChecked():
+            temps_debut = time.time()
             generateHistogramme_HSV(self.Dossier_images, self.progressBar)
             # Calculer le temps écoulé
             temps_ecoule = time.time() - temps_debut
@@ -175,6 +176,7 @@ class Ui_MainWindow(object):
 		
 		# Appel de la fonction de calcul du descripteur SIFT
         if self.Dossier_images and self.checkBox_SIFT.isChecked():
+            temps_debut = time.time()
             generateSIFT(self.Dossier_images, self.progressBar)
             # Calculer le temps écoulé
             temps_ecoule = time.time() - temps_debut
@@ -184,6 +186,7 @@ class Ui_MainWindow(object):
 
 		# Appel de la fonction de calcul du descripteur ORB
         if self.Dossier_images and self.checkBox_ORB.isChecked():
+            temps_debut = time.time()
             generateORB(self.Dossier_images, self.progressBar)
             # Calculer le temps écoulé
             temps_ecoule = time.time() - temps_debut
@@ -191,8 +194,18 @@ class Ui_MainWindow(object):
             # Afficher le temps écoulé dans le terminal
             print("Temps d'exécution ORB : {:.2f} secondes".format(temps_ecoule))
 
+        # Appel de la fonction de calcul du descripteur LBP
+        if self.Dossier_images and self.checkBox_LBP.isChecked():
+            temps_debut = time.time()
+            generateLBP(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution LBP : {:.2f} secondes".format(temps_ecoule))
+
         
-        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() :
+        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_LBP.isChecked():
             print("Merci de selectionner un descripteur via le Menu  ...")
             showDialog()
 

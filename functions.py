@@ -9,7 +9,7 @@ from skimage import exposure
 from skimage import io, color, img_as_ubyte
 from matplotlib import pyplot as plt
 from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
-
+from skimage.color import rgb2gray
 def showDialog():
     msgBox = QMessageBox()
     msgBox.setIcon(QMessageBox.Information)
@@ -58,8 +58,11 @@ def generateSIFT(filenames, progressBar):
     if not os.path.isdir("SIFT"):
         os.mkdir("SIFT")
     i=0
+    target_size = (600, 400)
     for path in os.listdir(filenames):
         img = cv2.imread(filenames+"/"+path)
+        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
+            img=resize(img, target_size)
         featureSum = 0
         sift = cv2.SIFT_create()  
         kps , des = sift.detectAndCompute(img,None)
@@ -77,8 +80,11 @@ def generateORB(filenames, progressBar):
     if not os.path.isdir("ORB"):
         os.mkdir("ORB")
     i=0
+    target_size = (600, 400)
     for path in os.listdir(filenames):
         img = cv2.imread(filenames+"/"+path)
+        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
+            img=resize(img, target_size)
         orb = cv2.ORB_create()
         key_point1,descrip1 = orb.detectAndCompute(img,None)
         
@@ -87,13 +93,42 @@ def generateORB(filenames, progressBar):
         progressBar.setValue(100*((i+1)/len(os.listdir(filenames))))
         i+=1
     print("indexation ORB terminée !!!!")
+
+def lbpDescriptor(image):                 # function : return LBP Image
+# settings for LBP
+  METHOD = 'uniform'
+  radius = 3
+  n_points = 8 * radius
+  gray = rgb2gray(image)
+  lbp = local_binary_pattern(gray, n_points, radius, METHOD)
+  return lbp
+
+def generateLBP(filenames, progressBar):
+    target_size = (600, 400)
+    if not os.path.isdir("LBP"):
+        os.mkdir("LBP")
+    i = 0
+    for path in os.listdir(filenames):
+        img = cv2.imread(filenames + "/" + path)
+        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
+            img=resize(img, target_size)
+        des = lbpDescriptor(img)
+        lbp_features = des.flatten()
+        descrip1 = np.array(lbp_features)
+        num_image, _ = path.split(".")
+        np.savetxt("LBP/" + str(num_image) + ".txt", descrip1)
+        progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
+        i += 1
+    print("indexation LBP terminée !!!!")
 	
-def extractReqFeatures(fileName,algo_choice):  
+def extractReqFeatures(fileName,algo_choice):
+    target_size=(600,400)
     print(algo_choice)
     if fileName : 
         img = cv2.imread(fileName)
-        resized_img = resize(img, (128*4, 64*4))
-            
+        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
+            img=resize(img, target_size)
+
         if algo_choice==1: #Couleurs
             histB = cv2.calcHist([img],[0],None,[256],[0,256])
             histG = cv2.calcHist([img],[1],None,[256],[0,256])
@@ -116,6 +151,13 @@ def extractReqFeatures(fileName,algo_choice):
             orb = cv2.ORB_create()
             # finding key points and descriptors of both images using detectAndCompute() function
             key_point1,vect_features = orb.detectAndCompute(img,None)
+
+        elif algo_choice==5: #LBP
+            des = lbpDescriptor(img)
+            lbp_features = des.flatten()
+            vect_features = np.array(lbp_features)
+            print(vect_features)
+
 			
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,vect_features)
         print("saved")
