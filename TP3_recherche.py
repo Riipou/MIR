@@ -342,10 +342,9 @@ class Ui_MainWindow(object):
             if not data.endswith(".txt"):
                 continue
             feature = np.loadtxt(data)
-
             self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
             pas += 1
-            self.progressBar.setValue(int(100 * ((pas+1) / 1000)))
+            self.progressBar.setValue(int(100 * ((pas+1) / 10000)))
         if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked():
             print("Merci de sélectionner au moins un descripteur dans le menu")
             showDialog()
@@ -396,12 +395,12 @@ class Ui_MainWindow(object):
         rappels = []
         precisions = []
         filename_req = os.path.basename(fileName)
-        num_image, _ = filename_req.split(".")
-        classe_image_requete = int(num_image) / 100
+        num_image= filename_req.split('_')[0]
+        classe_image_requete = int(num_image)
         val = 0
 
         for j in range(self.sortie):
-            classe_image_proche = (int(self.nom_image_plus_proches[j].split('.')[0])) / 100
+            classe_image_proche = int(self.nom_image_plus_proches[j].split('_')[0])
             classe_image_requete = int(classe_image_requete)
             classe_image_proche = int(classe_image_proche)
             if classe_image_requete == classe_image_proche:
