@@ -162,8 +162,7 @@ def extractReqFeatures(fileName,algo_choice):
     print(algo_choice)
     if fileName : 
         img = cv2.imread(fileName)
-        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
-            img=resize(img, target_size)
+
 
         if algo_choice==1: #Couleurs
             histB = cv2.calcHist([img],[0],None,[256],[0,256])
@@ -189,14 +188,20 @@ def extractReqFeatures(fileName,algo_choice):
             key_point1,vect_features = orb.detectAndCompute(img,None)
 
         elif algo_choice==5: #LBP
+            if img.shape[0] != target_size[0] or img.shape[1] != target_size[1]:
+                img = resize(img, target_size)
             des = lbpDescriptor(img)
             lbp_features = des.flatten()
             vect_features = np.array(lbp_features)
             print(vect_features)
         elif algo_choice==6 : #HOG
+            if img.shape[0] != target_size[0] or img.shape[1] != target_size[1]:
+                img = resize(img, target_size)
             # Calculer le descripteur HOG et obtenir l'image HOG
             vect_features, hog_image = hog(img, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True, multichannel=True)
         elif algo_choice==7 : #GLCM
+            if img.shape[0] != target_size[0] or img.shape[1] != target_size[1]:
+                img = resize(img, target_size)
             # Calculer le descripteur GLCM et
             if img.dtype == np.float64:
                 img = (img * 255).astype(np.uint8)
