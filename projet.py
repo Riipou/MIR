@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QApplication
 import cv2
 import numpy as np
 from skimage.transform import resize
@@ -348,13 +348,140 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        self.charger_2.clicked.connect(self.Ouvrir)  # lier le bouton Charger à la fonction Ouvrir
+        self.charger_2.clicked.connect(self.Ouvrir_2)  # lier le bouton Charger à la fonction Ouvrir
         self.charger_desc.clicked.connect(self.loadFeatures)
         self.chercher.clicked.connect(self.Recherche)
         self.calcul_RP.clicked.connect(self.rappel_precision)
+        self.charger.clicked.connect(self.Ouvrir)  # lier le bouton Charger à la fonction Ouvrir
+        self.tableView.clicked.connect(self.cliquerTab)
+        self.indexer.clicked.connect(self.extractFeatures)
+        self.Quitter.clicked.connect(self.Close)
+        self.indexer_2.clicked.connect(self.Close)
 
-    # Fonctions tab indexation
+    # Fonctions tab Indexation
+    def Close(self):
+        QApplication.quit()
+
     def Ouvrir(self, MainWindow):
+        self.list_images = []
+        # Sélectionner le dossier Wang
+        self.Dossier_images = QtWidgets.QFileDialog.getExistingDirectory(None, 'Select directory', "C://", QtWidgets.QFileDialog.ShowDirsOnly)+"/"
+        for i in range(len(os.listdir(self.Dossier_images))):
+            self.filenames = self.Dossier_images + str(os.listdir(self.Dossier_images)[i])
+            self.list_images.append(self.filenames)
+        # Afficher la première image
+        pixmap = QtGui.QPixmap(self.list_images[0])
+        pixmap = pixmap.scaled(self.image.width(), self.image.height(), QtCore.Qt.KeepAspectRatio)
+        self.image.setPixmap(pixmap)
+        self.image.setAlignment(QtCore.Qt.AlignCenter)
+        model = QStandardItemModel()
+        headerNames = []
+        headerNames.append("File name")
+        model.setHorizontalHeaderLabels(headerNames)
+        pas = 0
+        # Afficher la liste d'images dans le tableView
+        for i in range(len(self.list_images)):
+            row = []
+            first = self.list_images[i]  # chemin complet
+            second = os.path.basename(self.list_images[i])  # juste le nom du fichier
+            item = QStandardItem(first)
+            item.setEditable(False)
+            row.append(item)
+            model.setColumnCount(1)
+            model.appendRow(row)
+            pas += 1
+            self.progressBar.setValue(int(100 * ((pas+1) / len(self.list_images))))
+        self.tableView.setModel(model)
+
+    def cliquerTab(self, MainWindow):
+        index = self.tableView.selectionModel().currentIndex()
+        UrlImg = index.sibling(index.row(), index.column()).data()
+        pixmap = QtGui.QPixmap(UrlImg)
+        pixmap = pixmap.scaled(self.image.width(), self.image.height(),QtCore.Qt.KeepAspectRatio)
+        self.image.setPixmap(pixmap)
+        self.image.setAlignment(QtCore.Qt.AlignCenter)
+        
+    def extractFeatures(self, MainWindow):
+        
+		# Appel de la fonction de calcul de l'histogramme de couleur BGR
+        if self.Dossier_images and self.checkBox_HistC.isChecked():
+            temps_debut = time.time()
+            generateHistogramme_Color(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution Histogramme BGR : {:.2f} secondes".format(temps_ecoule))
+
+        
+		# Appel de la fonction de calcul de l'histogramme de couleur HSV
+        if self.Dossier_images and self.checkBox_HSV.isChecked():
+            temps_debut = time.time()
+            generateHistogramme_HSV(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution Histogramme HSV : {:.2f} secondes".format(temps_ecoule))
+		
+		# Appel de la fonction de calcul du descripteur SIFT
+        if self.Dossier_images and self.checkBox_SIFT.isChecked():
+            temps_debut = time.time()
+            generateSIFT(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution SIFT : {:.2f} secondes".format(temps_ecoule))
+
+		# Appel de la fonction de calcul du descripteur ORB
+        if self.Dossier_images and self.checkBox_ORB.isChecked():
+            temps_debut = time.time()
+            generateORB(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution ORB : {:.2f} secondes".format(temps_ecoule))
+
+        # Appel de la fonction de calcul du descripteur LBP
+        if self.Dossier_images and self.checkBox_LBP.isChecked():
+            temps_debut = time.time()
+            generateLBP(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution LBP : {:.2f} secondes".format(temps_ecoule))
+            
+        if self.Dossier_images and self.checkBox_HOG.isChecked():
+            temps_debut = time.time()
+            generateHOG(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution HOG : {:.2f} secondes".format(temps_ecoule))
+
+        if self.Dossier_images and self.checkBox_GLCM.isChecked():
+            temps_debut = time.time()
+            generateGLCM(self.Dossier_images, self.progressBar)
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - temps_debut
+
+            # Afficher le temps écoulé dans le terminal
+            print("Temps d'exécution GLCM : {:.2f} secondes".format(temps_ecoule))
+
+        
+        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_LBP.isChecked() and not self.checkBox_HOG.isChecked() and not self.checkBox_GLCM.isChecked():
+            print("Merci de selectionner un descripteur via le Menu  ...")
+            showDialog()
+
+        if len(self.Dossier_images)<1:
+            print("Merci de charger la base de données avec le bouton Ouvrir")
+
+    # Fonctions tab Recherche
+    def Ouvrir_2(self, MainWindow):
         global fileName
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "","Image Files (*.png *.jpeg *.jpg *.bmp)")
         pixmap = QtGui.QPixmap(fileName)
