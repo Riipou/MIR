@@ -586,6 +586,7 @@ class Ui_MainWindow(object):
             self.gridLayout.itemAt(i).widget().setParent(None)
         voisins = ""
         if self.algo_choice != 0:
+            temps_debut = time.time()
             ##Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)
             ##Definition du nombre de voisins
@@ -619,6 +620,8 @@ class Ui_MainWindow(object):
                         label.setPixmap(pixmap.scaled(0.3 * width, 0.3 * height,QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
                         self.gridLayout.addWidget(label, i, j)
                         k += 1
+            temps_ecoule = time.time() - temps_debut
+            print("Temps d'exécution recherche : {:.2f} secondes".format(temps_ecoule))
         else:
             print("Il faut choisir une méthode !")
 
