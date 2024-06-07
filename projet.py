@@ -585,7 +585,7 @@ class Ui_MainWindow(object):
             if self.algo_choice[0] == 1 or self.algo_choice[0] == 2 :
                 feature = feature.ravel()
             feature = np.concatenate([feature, feature])
-            for index, model_folder in enumerate(folder_model):
+            for index, folder in enumerate(folder_model):
                 if index > 0:
                     data2 = os.path.join(folder, j)
                     if not data2.endswith(".txt"):
