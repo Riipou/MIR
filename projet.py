@@ -490,32 +490,36 @@ class Ui_MainWindow(object):
         self.label_requete.setAlignment(QtCore.Qt.AlignCenter)
 
     def loadFeatures(self, MainWindow):
-        folder_model = ""
+        folder_model = []
+        self.algo_choice=[]
         if self.checkBox_HistC_2.isChecked():
-            folder_model = './BGR'
-            self.algo_choice = 1
+            folder_model.append('./BGR')
+            self.algo_choice.append(1)
         if self.checkBox_HSV_2.isChecked():
-            folder_model = './HSV'
-            self.algo_choice = 2
+            folder_model.append('./HSV')
+            self.algo_choice.append(2)
         if self.checkBox_SIFT_2.isChecked():
-            folder_model = './SIFT'
-            self.algo_choice = 3
+            folder_model.append('./SIFT')
+            self.algo_choice.append(3)
         if self.checkBox_ORB_2.isChecked():
-            folder_model = './ORB'
-            self.algo_choice = 4
+            folder_model.append('./ORB')
+            self.algo_choice.append(4)
         if self.checkBox_LBP_2.isChecked():
-            folder_model = './LBP'
-            self.algo_choice = 5
+            folder_model.append('./LBP')
+            self.algo_choice.append(5)
         if self.checkBox_HOG_2.isChecked():
-            folder_model = './HOG'
-            self.algo_choice = 6
+            folder_model.append('./HOG')
+            self.algo_choice.append(6)
         if self.checkBox_GLCM_2.isChecked():
-            folder_model = './GLCM'
-            self.algo_choice = 7
+            folder_model.append('./GLCM')
+            self.algo_choice.append(7)
         for i in reversed(range(self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
+        if (self.checkBox_ORB_2.isChecked() or self.checkBox_SIFT_2.isChecked()) and (self.checkBox_GLCM_2.isChecked() or self.checkBox_HistC_2.isChecked() or self.checkBox_HSV_2.isChecked() or self.checkBox_LBP_2.isChecked() or self.checkBox_HOG_2.isChecked()):
+            print("Vous ne pouvez pas combiner ORB ou SIFT avec d'autres descripteurs ")
+            showDialog()
         if filenames:
-            if self.algo_choice == 3 or self.algo_choice == 4:
+            if  3 in self.algo_choice or  4 in self.algo_choice:
                 self.comboBox.clear()
                 self.comboBox.addItems(["Brute force", "Flann"])
             else:
@@ -527,17 +531,20 @@ class Ui_MainWindow(object):
         self.features1 = []
         pas = 0
         print("chargement de descripteurs en cours ...")
-        for j in os.listdir(folder_model):  # folder_model : dossier de features
-            data = os.path.join(folder_model, j)
-            if not data.endswith(".txt"):
-                continue
-            feature = np.loadtxt(data)
-            self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
-            pas += 1
-            self.progressBar_2.setValue(int(100 * ((pas+1) / 10000)))
+        for folder in folder_model:
+            for j in os.listdir(folder):  # folder : dossier de features
+                data = os.path.join(folder, j)
+                if not data.endswith(".txt"):
+                    continue
+                feature = np.loadtxt(data)
+                self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
+                pas += 1
+                self.progressBar_2.setValue(int(100 * ((pas+1) /( len(folder_model)*10000))))
+
         if not self.checkBox_SIFT_2.isChecked() and not self.checkBox_HistC_2.isChecked() and not self.checkBox_HSV_2.isChecked() and not self.checkBox_ORB_2.isChecked() and not self.checkBox_LBP_2.isChecked() and not self.checkBox_HOG_2.isChecked() and not self.checkBox_GLCM_2.isChecked():
             print("Merci de sélectionner au moins un descripteur dans le menu")
             showDialog()
+        print(folder_model)
 
     def Recherche(self, MainWindow):
         # Remise à 0 de la grille des voisins
