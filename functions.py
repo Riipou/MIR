@@ -94,65 +94,80 @@ def generateORB(filenames, progressBar):
         i+=1
     print("indexation ORB terminée !!!!")
 
-def lbpDescriptor(image):                 # function : return LBP Image
-# settings for LBP
-  METHOD = 'uniform'
-  radius = 3
-  n_points = 8 * radius
-  gray = rgb2gray(image)
-  lbp = local_binary_pattern(gray, n_points, radius, METHOD)
-  return lbp
+def lbpDescriptor(image, radius, n_points):                 # function : return LBP Image
+    # settings for LBP
+    METHOD = 'default'
+    
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    image = cv2.resize(image,(350,350))
+    lbp = local_binary_pattern(image, n_points, radius, METHOD)
+    return lbp
 
 def generateLBP(filenames, progressBar):
-    target_size = (600, 400)
     if not os.path.isdir("LBP"):
         os.mkdir("LBP")
     i = 0
     for path in os.listdir(filenames):
         img = cv2.imread(filenames + "/" + path)
-        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
-            img=resize(img, target_size)
-        des = lbpDescriptor(img)
-        lbp_features = des.flatten()
-        descrip1 = np.array(lbp_features)
+        radius = 1
+        n_points = 8 * radius
+        des = lbpDescriptor(img, radius, n_points)
+        subSize=(70,70)
+        histograms = []
+        for k in range(int(des.shape[0]/subSize[0])):
+            for j in range(int(des.shape[1]/subSize[1])):
+                subVector = des[k*subSize[0]:(k+1)*subSize[0],j*subSize[1]:(j+1)*subSize[1]].ravel()
+                subHist,edges = np.histogram(subVector,bins=int(2**n_points),range=(0,2**n_points))
+                histograms = np.concatenate((histograms,subHist),axis=None)
         num_image, _ = path.split(".")
-        np.savetxt("LBP/" + str(num_image) + ".txt", descrip1)
+        np.savetxt("LBP/" + str(num_image) + ".txt", histograms)
         progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
         i += 1
     print("indexation LBP terminée !!!!")
 
 def generateHOG(filenames, progressBar):
-    target_size = (600, 400)
     if not os.path.isdir("HOG"):
         os.mkdir("HOG")
     i = 0
+    cellSize = (25,25)
+    blockSize = (50,50)
+    blockStride = (25,25)
+    nBins = 9
+    winSize = (350,350)
     for path in os.listdir(filenames):
         img = cv2.imread(filenames + "/" + path)
-        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
-            img=resize(img, target_size)
-        descrip1, hog_image = hog(img, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2),visualize=True, multichannel=True)
+        
+        image = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        image = cv2.resize(image,winSize)
+        hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
+        feature = hog.compute(image)
         num_image, _ = path.split(".")
-        np.savetxt("HOG/" + str(num_image) + ".txt", descrip1)
+        np.savetxt("HOG/" + str(num_image) + ".txt", feature)
         progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
         i += 1
     print("indexation HOG terminée !!!!")
 
 def generateGLCM(filenames, progressBar):
-    target_size = (600, 400)
     if not os.path.isdir("GLCM"):
         os.mkdir("GLCM")
+    
+    distances=[1,-1]
+    angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]
     i = 0
     for path in os.listdir(filenames):
-        img = cv2.imread(filenames + "/" + path)
-        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
-            img=resize(img, target_size)
-        if img.dtype == np.float64:
-            img = (img * 255).astype(np.uint8)
-        image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        glcm = greycomatrix(image, distances=[1], angles= [0, np.pi / 4, np.pi / 2, 3 * np.pi / 4], symmetric = True, normed = True)
-        descrip1 = glcm.flatten()
+        image = cv2.imread(filenames+"/"+path)
+        gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+        gray = img_as_ubyte(gray)
+        glcmMatrix = greycomatrix(gray, distances=distances, angles=angles, normed=True)
+        glcmProperties1 = greycoprops(glcmMatrix,'contrast').ravel()
+        glcmProperties2 = greycoprops(glcmMatrix,'dissimilarity').ravel()
+        glcmProperties3 = greycoprops(glcmMatrix,'homogeneity').ravel()
+        glcmProperties4 = greycoprops(glcmMatrix,'energy').ravel()
+        glcmProperties5 = greycoprops(glcmMatrix,'correlation').ravel()
+        glcmProperties6 = greycoprops(glcmMatrix,'ASM').ravel()
+        feature = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
         num_image, _ = path.split(".")
-        np.savetxt("GLCM/" + str(num_image) + ".txt", descrip1)
+        np.savetxt("GLCM/"+str(num_image)+".txt" ,feature)
         progressBar.setValue(100 * ((i + 1) / len(os.listdir(filenames))))
         i += 1
     print("indexation GLCM terminée !!!!")
@@ -188,26 +203,41 @@ def extractReqFeatures(fileName,algo_choice):
             key_point1,vect_features = orb.detectAndCompute(img,None)
 
         elif algo_choice==5: #LBP
-            if img.shape[0] != target_size[0] or img.shape[1] != target_size[1]:
-                img = resize(img, target_size)
-            des = lbpDescriptor(img)
-            lbp_features = des.flatten()
-            vect_features = np.array(lbp_features)
-            print(vect_features)
+            radius = 1
+            n_points = 8 * radius
+            des = lbpDescriptor(img, radius, n_points)
+            subSize=(70,70)
+            histograms = []
+            for k in range(int(des.shape[0]/subSize[0])):
+                for j in range(int(des.shape[1]/subSize[1])):
+                    subVector = des[k*subSize[0]:(k+1)*subSize[0],j*subSize[1]:(j+1)*subSize[1]].ravel()
+                    subHist,edges = np.histogram(subVector,bins=int(2**n_points),range=(0,2**n_points))
+                    histograms = np.concatenate((histograms,subHist),axis=None)
+            vect_features=histograms
+        
         elif algo_choice==6 : #HOG
-            if img.shape[0] != target_size[0] or img.shape[1] != target_size[1]:
-                img = resize(img, target_size)
-            # Calculer le descripteur HOG et obtenir l'image HOG
-            vect_features, hog_image = hog(img, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True, multichannel=True)
+            cellSize = (25,25)
+            blockSize = (50,50)
+            blockStride = (25,25)
+            nBins = 9
+            winSize = (350,350)
+            image = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+            image = cv2.resize(image,winSize)
+            hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
+            vect_features = hog.compute(image)
         elif algo_choice==7 : #GLCM
-            if img.shape[0] != target_size[0] or img.shape[1] != target_size[1]:
-                img = resize(img, target_size)
-            # Calculer le descripteur GLCM et
-            if img.dtype == np.float64:
-                img = (img * 255).astype(np.uint8)
-            image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            glcm = greycomatrix(image, distances=[1], angles=[0, np.pi / 4, np.pi / 2, 3 * np.pi / 4], symmetric=True, normed=True)
-            vect_features=glcm.flatten()
+            distances=[1,-1]
+            angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]
+            gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+            gray = img_as_ubyte(gray)
+            glcmMatrix = greycomatrix(gray, distances=distances, angles=angles, normed=True)
+            glcmProperties1 = greycoprops(glcmMatrix,'contrast').ravel()
+            glcmProperties2 = greycoprops(glcmMatrix,'dissimilarity').ravel()
+            glcmProperties3 = greycoprops(glcmMatrix,'homogeneity').ravel()
+            glcmProperties4 = greycoprops(glcmMatrix,'energy').ravel()
+            glcmProperties5 = greycoprops(glcmMatrix,'correlation').ravel()
+            glcmProperties6 = greycoprops(glcmMatrix,'ASM').ravel()
+            vect_features = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,vect_features)
         print("saved")
         #print("vect_features", vect_features)
