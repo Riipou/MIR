@@ -64,11 +64,11 @@ def bruteForceMatching(a, b):
 def distance_f(l1, l2, distanceName):
     if distanceName == "Euclidienne":
         distance = euclidean(l1, l2)
-    elif distanceName in ["Correlation", "Chicarre", "Intersection", "Bhattacharyya"]:
+    elif distanceName in ["Correlation", "Chi carre", "Intersection", "Bhattacharyya"]:
         if distanceName == "Correlation":
             methode = cv2.HISTCMP_CORREL
             distance = cv2.compareHist(np.float32(l1), np.float32(l2), methode)
-        elif distanceName == "Chicarre":
+        elif distanceName == "Chi carre":
             distance = chiSquareDistance(l1, l2)
         elif distanceName == "Intersection":
             methode = cv2.HISTCMP_INTERSECT
