@@ -580,22 +580,23 @@ class Ui_MainWindow(object):
             data = os.path.join(folder, j)
             if not data.endswith(".txt"):
                 continue
-            feature = np.loadtxt(data)
+            feature1 = np.loadtxt(data)
 
             if self.algo_choice[0] == 1 or self.algo_choice[0] == 2 :
-                feature = feature.ravel()
-            feature = np.concatenate([feature, feature])
-            for index, folder in enumerate(folder_model):
+                feature1 = feature1.ravel()
+            feature = np.concatenate([feature, feature1])
+            for index, folder2 in enumerate(folder_model):
                 if index > 0:
-                    data2 = os.path.join(folder, j)
+                    data2 = os.path.join(folder2, j)
                     if not data2.endswith(".txt"):
                         continue
                     feature2 = np.loadtxt(data2)
                     if self.algo_choice[index] == 1 or self.algo_choice[index] == 2:
                         feature2 = feature2.ravel()
                     feature=np.concatenate([feature,feature2])
-            if pas ==0 :
-                print(feature)
+
+            
+                
 
             self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
             pas += 1
@@ -611,7 +612,7 @@ class Ui_MainWindow(object):
         for i in reversed(range(self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         voisins = ""
-        if self.algo_choice != 0:
+        if len(self.algo_choice) != 0:
             temps_debut = time.time()
             ##Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)

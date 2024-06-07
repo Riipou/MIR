@@ -184,7 +184,7 @@ def extractReqFeatures(fileName,algo_choice):
             histG = cv2.calcHist([img],[1],None,[256],[0,256])
             histR = cv2.calcHist([img],[2],None,[256],[0,256])
             vect_features = np.concatenate((histB, np.concatenate((histG,histR),axis=None)),axis=None)
-            vect_features.ravel()
+            vect_features=vect_features.ravel()
             tot_feature = np.concatenate([tot_feature,vect_features])
         if 2 in algo_choice: # Histo HSV
             hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -192,7 +192,7 @@ def extractReqFeatures(fileName,algo_choice):
             histS = cv2.calcHist([hsv],[1],None,[256],[0,256])
             histV = cv2.calcHist([hsv],[2],None,[256],[0,256])
             vect_features = np.concatenate((histH, np.concatenate((histS,histV),axis=None)),axis=None)
-            vect_features.ravel()
+            vect_features = vect_features.ravel()
             tot_feature = np.concatenate([tot_feature, vect_features])
 
         if 3 in algo_choice: #SIFT
@@ -245,6 +245,8 @@ def extractReqFeatures(fileName,algo_choice):
             tot_feature = np.concatenate([tot_feature, vect_features])
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
         print("saved")
+        print(tot_feature.shape)
+        np.set_printoptions(precision=4, threshold=np.inf)
         print(tot_feature)
         #print("vect_features", vect_features)
         return tot_feature
