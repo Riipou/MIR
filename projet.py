@@ -594,6 +594,8 @@ class Ui_MainWindow(object):
                     if self.algo_choice[index] == 1 or self.algo_choice[index] == 2:
                         feature2 = feature2.ravel()
                     feature=np.concatenate([feature,feature2])
+            if pas ==0 :
+                print(feature)
 
             self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
             pas += 1

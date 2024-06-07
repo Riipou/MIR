@@ -245,5 +245,6 @@ def extractReqFeatures(fileName,algo_choice):
             tot_feature = np.concatenate([tot_feature, vect_features])
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
         print("saved")
+        print(tot_feature)
         #print("vect_features", vect_features)
         return tot_feature
