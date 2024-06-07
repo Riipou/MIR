@@ -177,32 +177,35 @@ def extractReqFeatures(fileName,algo_choice):
     print(algo_choice)
     if fileName : 
         img = cv2.imread(fileName)
+        tot_feature=[]
 
-
-        if algo_choice==1: #Couleurs
+        if 1 in algo_choice: #Couleurs
             histB = cv2.calcHist([img],[0],None,[256],[0,256])
             histG = cv2.calcHist([img],[1],None,[256],[0,256])
             histR = cv2.calcHist([img],[2],None,[256],[0,256])
             vect_features = np.concatenate((histB, np.concatenate((histG,histR),axis=None)),axis=None)
-        
-        elif algo_choice==2: # Histo HSV
+            vect_features.ravel()
+            tot_feature = np.concatenate([tot_feature,vect_features])
+        if 2 in algo_choice: # Histo HSV
             hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
             histH = cv2.calcHist([hsv],[0],None,[180],[0,180])
             histS = cv2.calcHist([hsv],[1],None,[256],[0,256])
             histV = cv2.calcHist([hsv],[2],None,[256],[0,256])
             vect_features = np.concatenate((histH, np.concatenate((histS,histV),axis=None)),axis=None)
+            vect_features.ravel()
+            tot_feature = np.concatenate([tot_feature, vect_features])
 
-        elif algo_choice==3: #SIFT
+        if 3 in algo_choice: #SIFT
             sift = cv2.SIFT_create() #cv2.xfeatures2d.SIFT_create() pour py < 3.4 
             # Find the key point
             kps , vect_features = sift.detectAndCompute(img,None)
-    
-        elif algo_choice==4: #ORB
+            tot_feature = np.concatenate([tot_feature, vect_features])
+        if 4 in algo_choice: #ORB
             orb = cv2.ORB_create()
             # finding key points and descriptors of both images using detectAndCompute() function
             key_point1,vect_features = orb.detectAndCompute(img,None)
-
-        elif algo_choice==5: #LBP
+            tot_feature = np.concatenate([tot_feature, vect_features])
+        if 5 in algo_choice: #LBP
             radius = 1
             n_points = 8 * radius
             des = lbpDescriptor(img, radius, n_points)
@@ -214,8 +217,8 @@ def extractReqFeatures(fileName,algo_choice):
                     subHist,edges = np.histogram(subVector,bins=int(2**n_points),range=(0,2**n_points))
                     histograms = np.concatenate((histograms,subHist),axis=None)
             vect_features=histograms
-        
-        elif algo_choice==6 : #HOG
+            tot_feature = np.concatenate([tot_feature, vect_features])
+        if 6 in algo_choice : #HOG
             cellSize = (25,25)
             blockSize = (50,50)
             blockStride = (25,25)
@@ -225,7 +228,8 @@ def extractReqFeatures(fileName,algo_choice):
             image = cv2.resize(image,winSize)
             hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
             vect_features = hog.compute(image)
-        elif algo_choice==7 : #GLCM
+            tot_feature = np.concatenate([tot_feature, vect_features])
+        if 7 in algo_choice : #GLCM
             distances=[1,-1]
             angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]
             gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -238,7 +242,8 @@ def extractReqFeatures(fileName,algo_choice):
             glcmProperties5 = greycoprops(glcmMatrix,'correlation').ravel()
             glcmProperties6 = greycoprops(glcmMatrix,'ASM').ravel()
             vect_features = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
-        np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,vect_features)
+            tot_feature = np.concatenate([tot_feature, vect_features])
+        np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
         print("saved")
         #print("vect_features", vect_features)
-        return vect_features
+        return tot_feature

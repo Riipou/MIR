@@ -531,30 +531,35 @@ class Ui_MainWindow(object):
         self.label_requete.setAlignment(QtCore.Qt.AlignCenter)
 
     def loadFeatures(self, MainWindow):
-        folder_model = ""
+        folder_model = []
+        self.algo_choice = []
         if self.checkBox_HistC_2.isChecked():
-            folder_model = './BGR'
-            self.algo_choice = 1
+            folder_model.append('./BGR')
+            self.algo_choice.append(1)
         if self.checkBox_HSV_2.isChecked():
-            folder_model = './HSV'
-            self.algo_choice = 2
+            folder_model.append('./HSV')
+            self.algo_choice.append(2)
         if self.checkBox_SIFT_2.isChecked():
-            folder_model = './SIFT'
-            self.algo_choice = 3
+            folder_model.append('./SIFT')
+            self.algo_choice.append(3)
         if self.checkBox_ORB_2.isChecked():
-            folder_model = './ORB'
-            self.algo_choice = 4
+            folder_model.append('./ORB')
+            self.algo_choice.append(4)
         if self.checkBox_LBP_2.isChecked():
-            folder_model = './LBP'
-            self.algo_choice = 5
+            folder_model.append('./LBP')
+            self.algo_choice.append(5)
         if self.checkBox_HOG_2.isChecked():
-            folder_model = './HOG'
-            self.algo_choice = 6
+            folder_model.append('./HOG')
+            self.algo_choice.append(6)
         if self.checkBox_GLCM_2.isChecked():
-            folder_model = './GLCM'
-            self.algo_choice = 7
+            folder_model.append('./GLCM')
+            self.algo_choice.append(7)
         for i in reversed(range(self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
+        if (self.checkBox_ORB_2.isChecked() or self.checkBox_SIFT_2.isChecked()) and (
+                self.checkBox_GLCM_2.isChecked() or self.checkBox_HistC_2.isChecked() or self.checkBox_HSV_2.isChecked() or self.checkBox_LBP_2.isChecked() or self.checkBox_HOG_2.isChecked()):
+            print("Vous ne pouvez pas combiner ORB ou SIFT avec d'autres descripteurs ")
+            showDialog()
         if filenames:
             if self.algo_choice == 3 or self.algo_choice == 4:
                 self.comboBox.clear()
@@ -568,17 +573,36 @@ class Ui_MainWindow(object):
         self.features1 = []
         pas = 0
         print("chargement de descripteurs en cours ...")
-        for j in os.listdir(folder_model):  # folder_model : dossier de features
-            data = os.path.join(folder_model, j)
+        folder=folder_model[0]
+        for j in os.listdir(folder):  # folder_model : dossier de features
+
+            feature=[]
+            data = os.path.join(folder, j)
             if not data.endswith(".txt"):
                 continue
             feature = np.loadtxt(data)
+
+            if self.algo_choice[0] == 1 or self.algo_choice[0] == 2 :
+                feature = feature.ravel()
+            feature = np.concatenate([feature, feature])
+            for index, model_folder in enumerate(folder_model):
+                if index > 0:
+                    data2 = os.path.join(folder, j)
+                    if not data2.endswith(".txt"):
+                        continue
+                    feature2 = np.loadtxt(data2)
+                    if self.algo_choice[index] == 1 or self.algo_choice[index] == 2:
+                        feature2 = feature2.ravel()
+                    feature=np.concatenate([feature,feature2])
+
             self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
             pas += 1
             self.progressBar_2.setValue(int(100 * ((pas+1) / 10000)))
         if not self.checkBox_SIFT_2.isChecked() and not self.checkBox_HistC_2.isChecked() and not self.checkBox_HSV_2.isChecked() and not self.checkBox_ORB_2.isChecked() and not self.checkBox_LBP_2.isChecked() and not self.checkBox_HOG_2.isChecked() and not self.checkBox_GLCM_2.isChecked():
             print("Merci de sélectionner au moins un descripteur dans le menu")
             showDialog()
+
+
 
     def Recherche(self, MainWindow):
         # Remise à 0 de la grille des voisins
@@ -590,7 +614,7 @@ class Ui_MainWindow(object):
             ##Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)
             ##Definition du nombre de voisins
-            self.sortie = 50
+            self.sortie = 10
             # Aller chercher dans la liste de l'interface la distance choisie
             distanceName = self.comboBox.currentText()
             # Générer les voisins
