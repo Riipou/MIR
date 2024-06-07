@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Projets.ui'
+# Form implementation generated from reading ui file 'interface.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.1
 #
@@ -336,6 +336,45 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
         self.tabWidget.addTab(self.tab_2, "")
+        self.tab_3 = QtWidgets.QWidget()
+        self.tab_3.setObjectName("tab_3")
+        self.image_2 = QtWidgets.QLabel(self.tab_3)
+        self.image_2.setGeometry(QtCore.QRect(40, 110, 441, 331))
+        self.image_2.setFrameShape(QtWidgets.QFrame.Panel)
+        self.image_2.setText("")
+        self.image_2.setScaledContents(True)
+        self.image_2.setObjectName("image_2")
+        self.tableView_2 = QtWidgets.QTableView(self.tab_3)
+        self.tableView_2.setGeometry(QtCore.QRect(490, 110, 531, 331))
+        self.tableView_2.setObjectName("tableView_2")
+        self.label_12 = QtWidgets.QLabel(self.tab_3)
+        self.label_12.setGeometry(QtCore.QRect(40, 70, 441, 31))
+        self.label_12.setFrameShape(QtWidgets.QFrame.Panel)
+        self.label_12.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_12.setObjectName("label_12")
+        self.label_13 = QtWidgets.QLabel(self.tab_3)
+        self.label_13.setGeometry(QtCore.QRect(490, 70, 531, 31))
+        self.label_13.setFrameShape(QtWidgets.QFrame.Panel)
+        self.label_13.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_13.setObjectName("label_13")
+        self.afficher = QtWidgets.QPushButton(self.tab_3)
+        self.afficher.setGeometry(QtCore.QRect(490, 20, 141, 41))
+        font = QtGui.QFont()
+        font.setFamily("Sans Serif")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.afficher.setFont(font)
+        self.afficher.setObjectName("afficher")
+        self.Choix = QtWidgets.QComboBox(self.tab_3)
+        self.Choix.setGeometry(QtCore.QRect(640, 20, 131, 41))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.Choix.setFont(font)
+        self.Choix.setObjectName("Choix")
+        self.Choix.addItem("")
+        self.Choix.addItem("")
+        self.tabWidget.addTab(self.tab_3, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1234, 20))
@@ -357,6 +396,8 @@ class Ui_MainWindow(object):
         self.indexer.clicked.connect(self.extractFeatures)
         self.Quitter.clicked.connect(self.Close)
         self.indexer_2.clicked.connect(self.Close)
+        self.afficher.clicked.connect(self.Fonction_Afficher)
+        self.tableView_2.clicked.connect(self.cliquerTab_2)
 
     # Fonctions tab Indexation
     def Close(self):
@@ -552,10 +593,11 @@ class Ui_MainWindow(object):
             self.gridLayout.itemAt(i).widget().setParent(None)
         voisins = ""
         if self.algo_choice != 0:
+            temps_debut = time.time()
             ##Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)
             ##Definition du nombre de voisins
-            self.sortie = 9
+            self.sortie = 50
             # Aller chercher dans la liste de l'interface la distance choisie
             distanceName = self.comboBox.currentText()
             # Générer les voisins
@@ -570,20 +612,23 @@ class Ui_MainWindow(object):
             k = 0
             for i in range(math.ceil(self.sortie / col)):
                 for j in range(col):
-                    img = cv2.imread(self.path_image_plus_proches[k], 1)  # load image
-                    # Remise de l'image en RGB pour l'afficher correctement
-                    b,g,r = cv2.split(img)  # get b,g,r
-                    img = cv2.merge([r, g, b])  # switch it to rgb
-                    # convert image to QImage
-                    height, width, channel = img.shape
-                    bytesPerLine = 3 * width
-                    qImg = QtGui.QImage(img.data, width, height, bytesPerLine,QtGui.QImage.Format_RGB888)
-                    pixmap = QtGui.QPixmap.fromImage(qImg)
-                    label = QtWidgets.QLabel("")
-                    label.setAlignment(QtCore.Qt.AlignCenter)
-                    label.setPixmap(pixmap.scaled(0.3 * width, 0.3 * height,QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
-                    self.gridLayout.addWidget(label, i, j)
-                    k += 1
+                    if k < 9:
+                        img = cv2.imread(self.path_image_plus_proches[k], 1)  # load image
+                        # Remise de l'image en RGB pour l'afficher correctement
+                        b,g,r = cv2.split(img)  # get b,g,r
+                        img = cv2.merge([r, g, b])  # switch it to rgb
+                        # convert image to QImage
+                        height, width, channel = img.shape
+                        bytesPerLine = 3 * width
+                        qImg = QtGui.QImage(img.data, width, height, bytesPerLine,QtGui.QImage.Format_RGB888)
+                        pixmap = QtGui.QPixmap.fromImage(qImg)
+                        label = QtWidgets.QLabel("")
+                        label.setAlignment(QtCore.Qt.AlignCenter)
+                        label.setPixmap(pixmap.scaled(0.3 * width, 0.3 * height,QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+                        self.gridLayout.addWidget(label, i, j)
+                        k += 1
+            temps_ecoule = time.time() - temps_debut
+            print("Temps d'exécution recherche : {:.2f} secondes".format(temps_ecoule))
         else:
             print("Il faut choisir une méthode !")
 
@@ -646,7 +691,45 @@ class Ui_MainWindow(object):
         height = self.label_requete.frameGeometry().height()
         self.label_courbe.setAlignment(QtCore.Qt.AlignCenter)
         self.label_courbe.setPixmap(pixmap.scaled(width, height,QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
-        
+
+    # Fonctions Tab top liste
+
+    def Fonction_Afficher(self, MainWindow):
+
+        # Afficher la première image
+        pixmap = QtGui.QPixmap(self.path_image_plus_proches[0])
+        pixmap = pixmap.scaled(self.image_2.width(), self.image_2.height(), QtCore.Qt.KeepAspectRatio)
+        self.image_2.setPixmap(pixmap)
+        self.image_2.setAlignment(QtCore.Qt.AlignCenter)
+        model = QStandardItemModel()
+        headerNames = []
+        headerNames.append("File name")
+        model.setHorizontalHeaderLabels(headerNames)
+        if self.Choix.currentIndex() == 0:
+            l = 20
+        elif self.Choix.currentIndex() == 1:
+            l = 50
+        # Afficher la liste d'images dans le tableView
+        for i in range(l):
+            row = []
+            first = self.path_image_plus_proches[i]  # chemin complet
+            second = self.nom_image_plus_proches[i]  # juste le nom du fichier
+            item = QStandardItem(first)
+            item.setEditable(False)
+            row.append(item)
+            model.setColumnCount(1)
+            model.appendRow(row)
+        self.tableView_2.setModel(model)
+
+    def cliquerTab_2(self, MainWindow):
+
+        index = self.tableView_2.selectionModel().currentIndex()
+        UrlImg = index.sibling(index.row(), index.column()).data()
+        pixmap = QtGui.QPixmap(UrlImg)
+        pixmap = pixmap.scaled(self.image_2.width(), self.image_2.height(),QtCore.Qt.KeepAspectRatio)
+        self.image_2.setPixmap(pixmap)
+        self.image_2.setAlignment(QtCore.Qt.AlignCenter)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -685,6 +768,12 @@ class Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "Recherche"))
         self.label_11.setText(_translate("MainWindow", "Distance :"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Recherche"))
+        self.label_12.setText(_translate("MainWindow", "Image"))
+        self.label_13.setText(_translate("MainWindow", "Top liste"))
+        self.afficher.setText(_translate("MainWindow", "Afficher"))
+        self.Choix.setItemText(0, _translate("MainWindow", "Top 20"))
+        self.Choix.setItemText(1, _translate("MainWindow", "Top 50"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Top liste"))
 
 
 if __name__ == "__main__":
