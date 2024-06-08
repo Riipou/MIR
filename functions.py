@@ -267,7 +267,6 @@ def extractReqFeatures(fileName,algo_choice):
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
         print("saved")
         print(tot_feature.shape)
-        np.set_printoptions(precision=4, threshold=np.inf)
         print(tot_feature)
        
         return tot_feature

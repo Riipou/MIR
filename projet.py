@@ -597,9 +597,8 @@ class Ui_MainWindow(object):
                         feature2 = feature2.ravel()
                     feature=np.concatenate([feature,feature2])
             if pas==0 :
-                feature.shape
                 print(feature)
-
+            feature.shape
                 
 
             self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
