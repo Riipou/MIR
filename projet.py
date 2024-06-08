@@ -774,10 +774,10 @@ class Ui_MainWindow(object):
         voisins = ""
         if len(self.algo_choice) != 0:
             temps_debut = time.time()
-            ##Generer les features de l'images requete
+            # Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)
-            ##Definition du nombre de voisins
-            self.sortie = 3
+            # Definition du nombre de voisins
+            self.sortie = 100
             # Aller chercher dans la liste de l'interface la distance choisie
             distanceName = self.comboBox.currentText()
             # Générer les voisins
@@ -820,7 +820,12 @@ class Ui_MainWindow(object):
         num_image= filename_req.split('_')[0]
         classe_image_requete = int(num_image)
         val = 0
-
+        nb_classes = 0
+        for path in os.listdir(filenames):
+            classe_image = int(path.split('_')[0])
+            if classe_image_requete == classe_image:
+                nb_classes += 1
+        self.tmax_label.setText(str(nb_classes))
         # Calculer rappels et prec top 50 et 100
         for j in range(self.sortie):
             classe_image_proche = int(self.nom_image_plus_proches[j].split('_')[0])
