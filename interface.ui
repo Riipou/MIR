@@ -32,12 +32,12 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1221</width>
+      <width>1041</width>
       <height>531</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -244,9 +244,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>470</y>
+        <y>462</y>
         <width>981</width>
-        <height>23</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="value">
@@ -271,33 +271,6 @@
      <attribute name="title">
       <string>Recherche</string>
      </attribute>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>960</x>
-        <y>10</y>
-        <width>251</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Calibri</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Panel</enum>
-      </property>
-      <property name="text">
-       <string>Rappel/Précision</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
      <widget class="QCheckBox" name="checkBox_GLCM_2">
       <property name="geometry">
        <rect>
@@ -344,48 +317,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="calcul_RP">
-      <property name="geometry">
-       <rect>
-        <x>960</x>
-        <y>70</y>
-        <width>251</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Calibri</family>
-        <pointsize>11</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Calculer la courbe R/P</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="Quitter">
-      <property name="geometry">
-       <rect>
-        <x>960</x>
-        <y>440</y>
-        <width>251</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Calibri</family>
-        <pointsize>11</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Quitter</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkBox_LBP_2">
@@ -481,36 +412,6 @@
        <string>Recherche</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_courbe">
-      <property name="geometry">
-       <rect>
-        <x>960</x>
-        <y>180</y>
-        <width>251</width>
-        <height>251</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Calibri</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Panel</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
@@ -543,7 +444,7 @@
        <rect>
         <x>380</x>
         <y>140</y>
-        <width>551</width>
+        <width>561</width>
         <height>31</height>
        </rect>
       </property>
@@ -664,12 +565,12 @@
        <rect>
         <x>10</x>
         <y>440</y>
-        <width>921</width>
+        <width>931</width>
         <height>41</height>
        </rect>
       </property>
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
      <widget class="QPushButton" name="charger_desc">
@@ -714,33 +615,6 @@
        <string>ORB</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_9">
-      <property name="geometry">
-       <rect>
-        <x>960</x>
-        <y>140</y>
-        <width>251</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Calibri</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Panel</enum>
-      </property>
-      <property name="text">
-       <string>Courbe R/P</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
@@ -773,7 +647,7 @@
        <rect>
         <x>380</x>
         <y>10</y>
-        <width>551</width>
+        <width>561</width>
         <height>31</height>
        </rect>
       </property>
@@ -827,11 +701,32 @@
        <rect>
         <x>380</x>
         <y>180</y>
-        <width>551</width>
+        <width>561</width>
         <height>251</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout"/>
+     </widget>
+     <widget class="QPushButton" name="Quitter_2">
+      <property name="geometry">
+       <rect>
+        <x>950</x>
+        <y>440</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Quitter</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
@@ -841,7 +736,7 @@
      <widget class="QLabel" name="image_2">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>10</x>
         <y>110</y>
         <width>441</width>
         <height>331</height>
@@ -860,7 +755,7 @@
      <widget class="QTableView" name="tableView_2">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>460</x>
         <y>110</y>
         <width>531</width>
         <height>331</height>
@@ -870,11 +765,16 @@
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>10</x>
         <y>70</y>
         <width>441</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
       <property name="frameShape">
        <enum>QFrame::Panel</enum>
@@ -889,11 +789,16 @@
      <widget class="QLabel" name="label_13">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>460</x>
         <y>70</y>
         <width>531</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
       <property name="frameShape">
        <enum>QFrame::Panel</enum>
@@ -908,7 +813,7 @@
      <widget class="QPushButton" name="afficher">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>460</x>
         <y>20</y>
         <width>141</width>
         <height>41</height>
@@ -929,7 +834,7 @@
      <widget class="QComboBox" name="Choix">
       <property name="geometry">
        <rect>
-        <x>640</x>
+        <x>610</x>
         <y>20</y>
         <width>131</width>
         <height>41</height>
@@ -950,6 +855,479 @@
         <string>Top 50</string>
        </property>
       </item>
+     </widget>
+     <widget class="QPushButton" name="indexer_3">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>20</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Quitter</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Résultats</string>
+     </attribute>
+     <widget class="QPushButton" name="calcul_RP">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>351</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Calculer la courbe R/P</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_courbe">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>351</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Quitter">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>340</y>
+        <width>351</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Quitter</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>351</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>Rappel/Précision</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>10</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>Rappel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>50</y>
+        <width>531</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>Top 50</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_50_result_r">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>110</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>180</y>
+        <width>531</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>Top 100</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_100_result_r">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>240</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>10</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>Précision</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_50_result_p">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>110</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_100_result_p">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>240</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>10</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>Average Precision</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_50_result_ap">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>110</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_100_result_ap">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>240</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>920</x>
+        <y>10</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>Tmax</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="tmax_label">
+      <property name="geometry">
+       <rect>
+        <x>920</x>
+        <y>50</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </widget>
    </widget>
