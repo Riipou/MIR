@@ -934,7 +934,7 @@
       <property name="geometry">
        <rect>
         <x>480</x>
-        <y>340</y>
+        <y>390</y>
         <width>351</width>
         <height>41</height>
        </rect>
@@ -1278,10 +1278,10 @@
      <widget class="QLabel" name="label_19">
       <property name="geometry">
        <rect>
-        <x>920</x>
-        <y>10</y>
-        <width>111</width>
-        <height>31</height>
+        <x>380</x>
+        <y>290</y>
+        <width>531</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -1302,12 +1302,66 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="tmax_label">
+     <widget class="QLabel" name="top_max_result_p">
       <property name="geometry">
        <rect>
-        <x>920</x>
-        <y>50</y>
-        <width>111</width>
+        <x>560</x>
+        <y>340</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_max_result_r">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>340</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="top_max_result_ap">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>340</y>
+        <width>171</width>
         <height>41</height>
        </rect>
       </property>

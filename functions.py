@@ -105,7 +105,6 @@ def generateLBP(filenames, progressBar):
     i = 0
     for path in os.listdir(filenames):
         img = cv2.imread(filenames + "/" + path)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         radius = 1
         n_points = 8 * radius
         des = lbpDescriptor(img, radius, n_points)
@@ -217,7 +216,6 @@ def extractReqFeatures(fileName,algo_choice):
         if 5 in algo_choice: #LBP
             radius = 1
             n_points = 8 * radius
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             des = lbpDescriptor(img, radius, n_points)
             subSize=(70,70)
             histograms = []

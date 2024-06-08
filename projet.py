@@ -367,7 +367,7 @@ class Ui_MainWindow(object):
         self.label_courbe.setAlignment(QtCore.Qt.AlignCenter)
         self.label_courbe.setObjectName("label_courbe")
         self.Quitter = QtWidgets.QPushButton(self.tab_4)
-        self.Quitter.setGeometry(QtCore.QRect(480, 340, 351, 41))
+        self.Quitter.setGeometry(QtCore.QRect(480, 390, 351, 41))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(11)
@@ -514,7 +514,7 @@ class Ui_MainWindow(object):
         self.top_100_result_ap.setAlignment(QtCore.Qt.AlignCenter)
         self.top_100_result_ap.setObjectName("top_100_result_ap")
         self.label_19 = QtWidgets.QLabel(self.tab_4)
-        self.label_19.setGeometry(QtCore.QRect(920, 10, 111, 31))
+        self.label_19.setGeometry(QtCore.QRect(380, 290, 531, 41))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(12)
@@ -524,18 +524,42 @@ class Ui_MainWindow(object):
         self.label_19.setFrameShape(QtWidgets.QFrame.Panel)
         self.label_19.setAlignment(QtCore.Qt.AlignCenter)
         self.label_19.setObjectName("label_19")
-        self.tmax_label = QtWidgets.QLabel(self.tab_4)
-        self.tmax_label.setGeometry(QtCore.QRect(920, 50, 111, 41))
+        self.top_max_result_p = QtWidgets.QLabel(self.tab_4)
+        self.top_max_result_p.setGeometry(QtCore.QRect(560, 340, 171, 41))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.tmax_label.setFont(font)
-        self.tmax_label.setFrameShape(QtWidgets.QFrame.Panel)
-        self.tmax_label.setText("")
-        self.tmax_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.tmax_label.setObjectName("tmax_label")
+        self.top_max_result_p.setFont(font)
+        self.top_max_result_p.setFrameShape(QtWidgets.QFrame.Panel)
+        self.top_max_result_p.setText("")
+        self.top_max_result_p.setAlignment(QtCore.Qt.AlignCenter)
+        self.top_max_result_p.setObjectName("top_max_result_p")
+        self.top_max_result_r = QtWidgets.QLabel(self.tab_4)
+        self.top_max_result_r.setGeometry(QtCore.QRect(380, 340, 171, 41))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.top_max_result_r.setFont(font)
+        self.top_max_result_r.setFrameShape(QtWidgets.QFrame.Panel)
+        self.top_max_result_r.setText("")
+        self.top_max_result_r.setAlignment(QtCore.Qt.AlignCenter)
+        self.top_max_result_r.setObjectName("top_max_result_r")
+        self.top_max_result_ap = QtWidgets.QLabel(self.tab_4)
+        self.top_max_result_ap.setGeometry(QtCore.QRect(740, 340, 171, 41))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.top_max_result_ap.setFont(font)
+        self.top_max_result_ap.setFrameShape(QtWidgets.QFrame.Panel)
+        self.top_max_result_ap.setText("")
+        self.top_max_result_ap.setAlignment(QtCore.Qt.AlignCenter)
+        self.top_max_result_ap.setObjectName("top_max_result_ap")
         self.tabWidget.addTab(self.tab_4, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -557,7 +581,7 @@ class Ui_MainWindow(object):
         self.tableView.clicked.connect(self.cliquerTab)
         self.indexer.clicked.connect(self.extractFeatures)
         self.Quitter.clicked.connect(self.Close)
-        self.Quitter.clicked.connect(self.Close)
+        self.Quitter_2.clicked.connect(self.Close)
         self.indexer_3.clicked.connect(self.Close)
         self.indexer_2.clicked.connect(self.Close)
         self.afficher.clicked.connect(self.Fonction_Afficher)
@@ -776,8 +800,18 @@ class Ui_MainWindow(object):
             temps_debut = time.time()
             # Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)
+
+            filename_req = os.path.basename(fileName)
+            num_image= filename_req.split('_')[0]
+            classe_image_requete = int(num_image)
+            nb_classes = 0
+            for path in os.listdir(filenames):
+                classe_image = int(path.split('_')[0])
+                if classe_image_requete == classe_image:
+                    nb_classes += 1
+            self.nb_classes = nb_classes
             # Definition du nombre de voisins
-            self.sortie = 100
+            self.sortie = nb_classes
             # Aller chercher dans la liste de l'interface la distance choisie
             distanceName = self.comboBox.currentText()
             # Générer les voisins
@@ -820,13 +854,6 @@ class Ui_MainWindow(object):
         num_image= filename_req.split('_')[0]
         classe_image_requete = int(num_image)
         val = 0
-        nb_classes = 0
-        for path in os.listdir(filenames):
-            classe_image = int(path.split('_')[0])
-            if classe_image_requete == classe_image:
-                nb_classes += 1
-        self.tmax_label.setText(str(nb_classes))
-        # Calculer rappels et prec top 50 et 100
         for j in range(self.sortie):
             classe_image_proche = int(self.nom_image_plus_proches[j].split('_')[0])
             classe_image_requete = int(classe_image_requete)
@@ -855,6 +882,11 @@ class Ui_MainWindow(object):
                 self.top_100_result_p.setText(str(precision))
                 self.top_100_result_r.setText(str(rappel))
                 self.top_100_result_ap.setText(str("{:.2f}".format(np.mean(precisions))))
+            if i == self.nb_classes-1:
+                self.top_max_result_p.setText(str(precision))
+                self.top_max_result_r.setText(str(rappel))
+                self.top_max_result_ap.setText(str("{:.2f}".format(np.mean(precisions))))
+                self.label_19.setText("Top "+str(self.nb_classes))
         # Création de la courbe R/P
         plt.plot(rappels, precisions)
         plt.xlabel("Recall")
