@@ -57,22 +57,20 @@ def generateHistogramme_Color(filenames, progressBar):
 def generateSIFT(filenames, progressBar):
     if not os.path.isdir("SIFT"):
         os.mkdir("SIFT")
-    i=0
-    target_size = (600, 400)
+    i = 0
     for path in os.listdir(filenames):
         img = cv2.imread(filenames+"/"+path)
-        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
-            img=resize(img, target_size)
         featureSum = 0
         sift = cv2.SIFT_create()  
         kps , des = sift.detectAndCompute(img,None)
 
         num_image, _ = path.split(".")
+        des = des.flatten()
         np.savetxt("SIFT/"+str(num_image)+".txt" ,des)
         progressBar.setValue(100*((i+1)/len(os.listdir(filenames))))
         
         featureSum += len(kps)
-        i+=1
+        i += 1
     print("Indexation SIFT terminée !!!!")    
 
 
@@ -186,6 +184,7 @@ def extractReqFeatures(fileName,algo_choice):
             vect_features = np.concatenate((histB, np.concatenate((histG,histR),axis=None)),axis=None)
             vect_features=vect_features.ravel()
             tot_feature = np.concatenate([tot_feature,vect_features])
+
         if 2 in algo_choice: # Histo HSV
             hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
             histH = cv2.calcHist([hsv],[0],None,[180],[0,180])
@@ -196,9 +195,11 @@ def extractReqFeatures(fileName,algo_choice):
             tot_feature = np.concatenate([tot_feature, vect_features])
 
         if 3 in algo_choice: #SIFT
-            sift = cv2.SIFT_create() #cv2.xfeatures2d.SIFT_create() pour py < 3.4 
-            # Find the key point
+
+            sift = cv2.SIFT_create()  
             kps , vect_features = sift.detectAndCompute(img,None)
+            vect_features = vect_features.flatten()
+
             tot_feature = np.concatenate([tot_feature, vect_features])
         if 4 in algo_choice: #ORB
             orb = cv2.ORB_create()
