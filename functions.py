@@ -77,13 +77,10 @@ def generateORB(filenames, progressBar):
     if not os.path.isdir("ORB"):
         os.mkdir("ORB")
     i=0
-    target_size = (600, 400)
     for path in os.listdir(filenames):
         img = cv2.imread(filenames+"/"+path)
-        if img.shape[0] != target_size[0] or img.shape[1] != target_size[1] :
-            img=resize(img, target_size)
         orb = cv2.ORB_create()
-        key_point1,descrip1 = orb.detectAndCompute(img,None)
+        key_point1, descrip1 = orb.detectAndCompute(img,None)
         
         num_image, _ = path.split(".")
         np.savetxt("ORB/"+str(num_image)+".txt" ,descrip1 )
@@ -171,7 +168,6 @@ def generateGLCM(filenames, progressBar):
 	
 def extractReqFeatures(fileName,algo_choice):
     target_size=(600,400)
-    print(algo_choice)
     if fileName : 
         img = cv2.imread(fileName)
 
@@ -266,7 +262,5 @@ def extractReqFeatures(fileName,algo_choice):
                 tot_feature = np.concatenate([tot_feature, vect_features])
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
         print("saved")
-        print(tot_feature.shape)
-        print(tot_feature)
        
         return tot_feature

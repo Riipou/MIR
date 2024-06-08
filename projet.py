@@ -573,37 +573,31 @@ class Ui_MainWindow(object):
         self.features1 = []
         pas = 0
         print("chargement de descripteurs en cours ...")
-        folder=folder_model[0]
-        for j in os.listdir(folder):  # folder_model : dossier de features
+        if len(folder_model) > 0:
+            folder=folder_model[0]
+            for j in os.listdir(folder):  # folder_model : dossier de features
+                data = os.path.join(folder, j)
+                if not data.endswith(".txt"):
+                    continue
+                feature1 = np.loadtxt(data)
 
-
-            data = os.path.join(folder, j)
-            if not data.endswith(".txt"):
-                continue
-            feature1 = np.loadtxt(data)
-
-            if self.algo_choice[0] == 1 or self.algo_choice[0] == 2 :
-                feature1 = feature1.ravel()
-                print(feature1.shape)
-            feature = feature1
-            for index, folder2 in enumerate(folder_model):
-                if index > 0:
-                    data2 = os.path.join(folder2, j)
-                    if not data2.endswith(".txt"):
-                        continue
-                    feature2 = np.loadtxt(data2)
-                    print(feature2.shape)
-                    if 1 in self.algo_choice[index] or 2 in self.algo_choice[index]:
-                        feature2 = feature2.ravel()
-                    feature=np.concatenate([feature,feature2])
-            if pas==0 :
-                print(feature)
-            feature.shape
-                
-
-            self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
-            pas += 1
-            self.progressBar_2.setValue(int(100 * ((pas+1) / 10000)))
+                if self.algo_choice[0] == 1 or self.algo_choice[0] == 2 :
+                    feature1 = feature1.ravel()
+                feature = feature1
+                for index, folder2 in enumerate(folder_model):
+                    if index > 0:
+                        data2 = os.path.join(folder2, j)
+                        if not data2.endswith(".txt"):
+                            continue
+                        feature2 = np.loadtxt(data2)
+                        if 1 in self.algo_choice[index] or 2 in self.algo_choice[index]:
+                            feature2 = feature2.ravel()
+                        feature=np.concatenate([feature,feature2])
+                if pas==0 :
+                    feature.shape
+                self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
+                pas += 1
+                self.progressBar_2.setValue(int(100 * ((pas+1) / 10000)))
         if not self.checkBox_SIFT_2.isChecked() and not self.checkBox_HistC_2.isChecked() and not self.checkBox_HSV_2.isChecked() and not self.checkBox_ORB_2.isChecked() and not self.checkBox_LBP_2.isChecked() and not self.checkBox_HOG_2.isChecked() and not self.checkBox_GLCM_2.isChecked():
             print("Merci de sélectionner au moins un descripteur dans le menu")
             showDialog()
