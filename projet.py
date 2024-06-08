@@ -561,7 +561,7 @@ class Ui_MainWindow(object):
             print("Vous ne pouvez pas combiner ORB ou SIFT avec d'autres descripteurs ")
             showDialog()
         if filenames:
-            if self.algo_choice == 3 or self.algo_choice == 4:
+            if 3 in self.algo_choice or 4 in self.algo_choice:
                 self.comboBox.clear()
                 self.comboBox.addItems(["Brute force", "Flann"])
             else:
@@ -576,7 +576,7 @@ class Ui_MainWindow(object):
         folder=folder_model[0]
         for j in os.listdir(folder):  # folder_model : dossier de features
 
-            feature=[]
+
             data = os.path.join(folder, j)
             if not data.endswith(".txt"):
                 continue
@@ -584,18 +584,22 @@ class Ui_MainWindow(object):
 
             if self.algo_choice[0] == 1 or self.algo_choice[0] == 2 :
                 feature1 = feature1.ravel()
-            feature = np.concatenate([feature, feature1])
+                print(feature1.shape)
+            feature = feature1
             for index, folder2 in enumerate(folder_model):
                 if index > 0:
                     data2 = os.path.join(folder2, j)
                     if not data2.endswith(".txt"):
                         continue
                     feature2 = np.loadtxt(data2)
-                    if self.algo_choice[index] == 1 or self.algo_choice[index] == 2:
+                    print(feature2.shape)
+                    if 1 in self.algo_choice[index] or 2 in self.algo_choice[index]:
                         feature2 = feature2.ravel()
                     feature=np.concatenate([feature,feature2])
+            if pas==0 :
+                feature.shape
+                print(feature)
 
-            
                 
 
             self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))

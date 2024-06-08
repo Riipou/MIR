@@ -65,7 +65,6 @@ def generateSIFT(filenames, progressBar):
         kps , des = sift.detectAndCompute(img,None)
 
         num_image, _ = path.split(".")
-        des = des.flatten()
         np.savetxt("SIFT/"+str(num_image)+".txt" ,des)
         progressBar.setValue(100*((i+1)/len(os.listdir(filenames))))
         
@@ -175,7 +174,7 @@ def extractReqFeatures(fileName,algo_choice):
     print(algo_choice)
     if fileName : 
         img = cv2.imread(fileName)
-        tot_feature=[]
+
 
         if 1 in algo_choice: #Couleurs
             histB = cv2.calcHist([img],[0],None,[256],[0,256])
@@ -183,7 +182,10 @@ def extractReqFeatures(fileName,algo_choice):
             histR = cv2.calcHist([img],[2],None,[256],[0,256])
             vect_features = np.concatenate((histB, np.concatenate((histG,histR),axis=None)),axis=None)
             vect_features=vect_features.ravel()
-            tot_feature = np.concatenate([tot_feature,vect_features])
+            if algo_choice[0]==1 :
+                tot_feature=vect_features
+            else :
+                tot_feature = np.concatenate([tot_feature,vect_features])
 
         if 2 in algo_choice: # Histo HSV
             hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -192,20 +194,29 @@ def extractReqFeatures(fileName,algo_choice):
             histV = cv2.calcHist([hsv],[2],None,[256],[0,256])
             vect_features = np.concatenate((histH, np.concatenate((histS,histV),axis=None)),axis=None)
             vect_features = vect_features.ravel()
-            tot_feature = np.concatenate([tot_feature, vect_features])
+            if algo_choice[0] == 2:
+                tot_feature = vect_features
+            else:
+                tot_feature = np.concatenate([tot_feature, vect_features])
 
         if 3 in algo_choice: #SIFT
 
             sift = cv2.SIFT_create()  
             kps , vect_features = sift.detectAndCompute(img,None)
-            vect_features = vect_features.flatten()
+            vect_features = vect_features
 
-            tot_feature = np.concatenate([tot_feature, vect_features])
+            if algo_choice[0] == 3:
+                tot_feature = vect_features
+            else:
+                tot_feature = np.concatenate([tot_feature, vect_features])
         if 4 in algo_choice: #ORB
             orb = cv2.ORB_create()
             # finding key points and descriptors of both images using detectAndCompute() function
             key_point1,vect_features = orb.detectAndCompute(img,None)
-            tot_feature = np.concatenate([tot_feature, vect_features])
+            if algo_choice[0] == 4:
+                tot_feature = vect_features
+            else:
+                tot_feature = np.concatenate([tot_feature, vect_features])
         if 5 in algo_choice: #LBP
             radius = 1
             n_points = 8 * radius
@@ -218,7 +229,10 @@ def extractReqFeatures(fileName,algo_choice):
                     subHist,edges = np.histogram(subVector,bins=int(2**n_points),range=(0,2**n_points))
                     histograms = np.concatenate((histograms,subHist),axis=None)
             vect_features=histograms
-            tot_feature = np.concatenate([tot_feature, vect_features])
+            if algo_choice[0] == 5:
+                tot_feature = vect_features
+            else:
+                tot_feature = np.concatenate([tot_feature, vect_features])
         if 6 in algo_choice : #HOG
             cellSize = (25,25)
             blockSize = (50,50)
@@ -229,7 +243,10 @@ def extractReqFeatures(fileName,algo_choice):
             image = cv2.resize(image,winSize)
             hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
             vect_features = hog.compute(image)
-            tot_feature = np.concatenate([tot_feature, vect_features])
+            if algo_choice[0] == 6:
+                tot_feature = vect_features
+            else:
+                tot_feature = np.concatenate([tot_feature, vect_features])
         if 7 in algo_choice : #GLCM
             distances=[1,-1]
             angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]
@@ -243,11 +260,14 @@ def extractReqFeatures(fileName,algo_choice):
             glcmProperties5 = greycoprops(glcmMatrix,'correlation').ravel()
             glcmProperties6 = greycoprops(glcmMatrix,'ASM').ravel()
             vect_features = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
-            tot_feature = np.concatenate([tot_feature, vect_features])
+            if algo_choice[0] == 7:
+                tot_feature = vect_features
+            else:
+                tot_feature = np.concatenate([tot_feature, vect_features])
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
         print("saved")
         print(tot_feature.shape)
         np.set_printoptions(precision=4, threshold=np.inf)
         print(tot_feature)
-        #print("vect_features", vect_features)
+       
         return tot_feature
