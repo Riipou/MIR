@@ -60,6 +60,7 @@ def generateSIFT(filenames, progressBar):
     i = 0
     for path in os.listdir(filenames):
         img = cv2.imread(filenames+"/"+path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         featureSum = 0
         sift = cv2.SIFT_create()  
         kps , des = sift.detectAndCompute(img,None)
@@ -79,6 +80,7 @@ def generateORB(filenames, progressBar):
     i=0
     for path in os.listdir(filenames):
         img = cv2.imread(filenames+"/"+path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         orb = cv2.ORB_create()
         key_point1, descrip1 = orb.detectAndCompute(img,None)
         
@@ -103,6 +105,7 @@ def generateLBP(filenames, progressBar):
     i = 0
     for path in os.listdir(filenames):
         img = cv2.imread(filenames + "/" + path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         radius = 1
         n_points = 8 * radius
         des = lbpDescriptor(img, radius, n_points)
@@ -196,26 +199,25 @@ def extractReqFeatures(fileName,algo_choice):
                 tot_feature = np.concatenate([tot_feature, vect_features])
 
         if 3 in algo_choice: #SIFT
-
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             sift = cv2.SIFT_create()  
             kps , vect_features = sift.detectAndCompute(img,None)
             vect_features = vect_features
 
             if algo_choice[0] == 3:
                 tot_feature = vect_features
-            else:
-                tot_feature = np.concatenate([tot_feature, vect_features])
         if 4 in algo_choice: #ORB
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             orb = cv2.ORB_create()
             # finding key points and descriptors of both images using detectAndCompute() function
             key_point1,vect_features = orb.detectAndCompute(img,None)
             if algo_choice[0] == 4:
                 tot_feature = vect_features
-            else:
-                tot_feature = np.concatenate([tot_feature, vect_features])
+    
         if 5 in algo_choice: #LBP
             radius = 1
             n_points = 8 * radius
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             des = lbpDescriptor(img, radius, n_points)
             subSize=(70,70)
             histograms = []
@@ -262,5 +264,6 @@ def extractReqFeatures(fileName,algo_choice):
                 tot_feature = np.concatenate([tot_feature, vect_features])
         np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
         print("saved")
-       
+        print(tot_feature.shape)
+
         return tot_feature

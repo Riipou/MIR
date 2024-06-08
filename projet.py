@@ -745,7 +745,7 @@ class Ui_MainWindow(object):
                     continue
                 feature1 = np.loadtxt(data)
 
-                if self.algo_choice[0] == 1 or self.algo_choice[0] == 2 :
+                if self.algo_choice[0] == 1 or self.algo_choice[0] == 2:
                     feature1 = feature1.ravel()
                 feature = feature1
                 for index, folder2 in enumerate(folder_model):
@@ -754,11 +754,10 @@ class Ui_MainWindow(object):
                         if not data2.endswith(".txt"):
                             continue
                         feature2 = np.loadtxt(data2)
-                        if 1 in self.algo_choice[index] or 2 in self.algo_choice[index]:
+                        if self.algo_choice[0] == 1 or self.algo_choice[0] == 2:
                             feature2 = feature2.ravel()
                         feature=np.concatenate([feature,feature2])
-                if pas==0 :
-                    feature.shape
+
                 self.features1.append((os.path.join(filenames, os.path.basename(data).split('.')[0] + '.jpg'),feature))
                 pas += 1
                 self.progressBar_2.setValue(int(100 * ((pas+1) / 10000)))
@@ -778,7 +777,7 @@ class Ui_MainWindow(object):
             ##Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)
             ##Definition du nombre de voisins
-            self.sortie = 100
+            self.sortie = 3
             # Aller chercher dans la liste de l'interface la distance choisie
             distanceName = self.comboBox.currentText()
             # Générer les voisins
