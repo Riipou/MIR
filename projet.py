@@ -802,12 +802,11 @@ class Ui_MainWindow(object):
             req = extractReqFeatures(fileName, self.algo_choice)
 
             filename_req = os.path.basename(fileName)
-            num_image= filename_req.split('_')[0]
-            classe_image_requete = int(num_image)
+            classe_image_requete = filename_req.split('_')[:2]
             nb_classes = 0
             for path in os.listdir(filenames):
-                classe_image = int(path.split('_')[0])
-                if classe_image_requete == classe_image:
+                classe_image = path.split('_')[:2]
+                if classe_image[0] == classe_image_requete[0] and classe_image[1] == classe_image_requete[1]:
                     nb_classes += 1
             self.nb_classes = nb_classes
             # Definition du nombre de voisins
@@ -851,14 +850,11 @@ class Ui_MainWindow(object):
         rappels = []
         precisions = []
         filename_req = os.path.basename(fileName)
-        num_image= filename_req.split('_')[0]
-        classe_image_requete = int(num_image)
+        classe_image_requete = filename_req.split('_')[:2]
         val = 0
         for j in range(self.sortie):
-            classe_image_proche = int(self.nom_image_plus_proches[j].split('_')[0])
-            classe_image_requete = int(classe_image_requete)
-            classe_image_proche = int(classe_image_proche)
-            if classe_image_requete == classe_image_proche:
+            classe_image_proche = self.nom_image_plus_proches[j].split('_')[:2]
+            if classe_image_requete[0] == classe_image_proche[0] and classe_image_requete[1] == classe_image_proche[1]:
                 rappel_precision.append(True)  # Bonne classe (pertinant)
                 val += 1
             else:
@@ -891,13 +887,13 @@ class Ui_MainWindow(object):
         plt.plot(rappels, precisions)
         plt.xlabel("Recall")
         plt.ylabel("Precision")
-        plt.title("R/P voisins de l'image n°" + num_image)
+        plt.title("R/P voisins de l'image n°" + classe_image_requete[0])
 
         # Enregistrement de la courbe RP
-        save_folder = os.path.join(".", num_image)
+        save_folder = os.path.join(".", "RP_results")
         if not os.path.exists(save_folder):
             os.makedirs(save_folder)
-        save_name = os.path.join(save_folder, num_image + '.png')
+        save_name = os.path.join(save_folder, classe_image_requete[0] + '_' + classe_image_requete[1] + '.png')
         plt.savefig(save_name, format='png', dpi=600)
         plt.close()
 

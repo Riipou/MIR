@@ -260,7 +260,11 @@ def extractReqFeatures(fileName,algo_choice):
                 tot_feature = vect_features
             else:
                 tot_feature = np.concatenate([tot_feature, vect_features])
-        np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,tot_feature)
+        save_folder = os.path.join(".", "requests")
+        if not os.path.exists(save_folder):
+            os.makedirs(save_folder)
+        save_name = os.path.join(save_folder, "Methode_"+str(algo_choice)+"_request.txt")
+        np.savetxt(save_name, tot_feature)
         print("saved")
 
         return tot_feature
