@@ -704,7 +704,7 @@ class Ui_MainWindow(object):
         
         if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_LBP.isChecked() and not self.checkBox_HOG.isChecked() and not self.checkBox_GLCM.isChecked():
             print("Merci de selectionner un descripteur via le Menu  ...")
-            showDialog()
+            showDialog("Merci de sélectionner un descripteur via le menu ci-dessus.", "Pas de Descripteur sélectionné")
 
         if len(self.Dossier_images)<1:
             print("Merci de charger la base de données avec le bouton Ouvrir")
@@ -744,10 +744,10 @@ class Ui_MainWindow(object):
             self.algo_choice.append(7)
         for i in reversed(range(self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
-        if (self.checkBox_ORB_2.isChecked() or self.checkBox_SIFT_2.isChecked()) and (
-                self.checkBox_GLCM_2.isChecked() or self.checkBox_HistC_2.isChecked() or self.checkBox_HSV_2.isChecked() or self.checkBox_LBP_2.isChecked() or self.checkBox_HOG_2.isChecked()):
+        if (self.checkBox_ORB_2.isChecked() and (
+                self.checkBox_SIFT_2.isChecked() or self.checkBox_GLCM_2.isChecked() or self.checkBox_HistC_2.isChecked() or self.checkBox_HSV_2.isChecked() or self.checkBox_LBP_2.isChecked() or self.checkBox_HOG_2.isChecked())) or (self.checkBox_SIFT_2.isChecked() and (self.checkBox_ORB_2.isChecked() or self.checkBox_GLCM_2.isChecked() or self.checkBox_HistC_2.isChecked() or self.checkBox_HSV_2.isChecked() or self.checkBox_LBP_2.isChecked() or self.checkBox_HOG_2.isChecked())):
             print("Vous ne pouvez pas combiner ORB ou SIFT avec d'autres descripteurs ")
-            showDialog()
+            showDialog("Vous ne pouvez pas combiner ORB ou SIFT avec d'autres descripteurs.", "Combinaison impossible !")
         if filenames:
             if 3 in self.algo_choice or 4 in self.algo_choice:
                 self.comboBox.clear()
@@ -787,7 +787,7 @@ class Ui_MainWindow(object):
                 self.progressBar_2.setValue(int(100 * ((pas+1) / 10000)))
         if not self.checkBox_SIFT_2.isChecked() and not self.checkBox_HistC_2.isChecked() and not self.checkBox_HSV_2.isChecked() and not self.checkBox_ORB_2.isChecked() and not self.checkBox_LBP_2.isChecked() and not self.checkBox_HOG_2.isChecked() and not self.checkBox_GLCM_2.isChecked():
             print("Merci de sélectionner au moins un descripteur dans le menu")
-            showDialog()
+            showDialog("Merci de sélectionner un descripteur via le menu ci-dessus.", "Pas de Descripteur sélectionné")
 
 
 
@@ -867,21 +867,21 @@ class Ui_MainWindow(object):
                     val += 1
                 j -= 1
             precision = val / (i+1)
-            rappel =  val/self.sortie # attention pour lisibilité diviser par 9 mais normalement c'est divisé par 100 le nombre total d'images
+            rappel =  val/self.sortie
             rappels.append(rappel)
             precisions.append(precision)
             if i == 49:
-                self.top_50_result_p.setText(str(precision))
-                self.top_50_result_r.setText(str(rappel))
-                self.top_50_result_ap.setText(str("{:.2f}".format(np.mean(precisions))))
+                self.top_50_result_p.setText(str("{:.2f}".format(precision*100))+"%")
+                self.top_50_result_r.setText(str("{:.2f}".format(rappel*100))+"%")
+                self.top_50_result_ap.setText(str("{:.2f}".format(np.mean(precisions)*100))+"%")
             if i == 99:
-                self.top_100_result_p.setText(str(precision))
-                self.top_100_result_r.setText(str(rappel))
-                self.top_100_result_ap.setText(str("{:.2f}".format(np.mean(precisions))))
+                self.top_100_result_p.setText(str("{:.2f}".format(precision*100))+"%")
+                self.top_100_result_r.setText(str("{:.2f}".format(rappel*100))+"%")
+                self.top_100_result_ap.setText(str("{:.2f}".format(np.mean(precisions)*100))+"%")
             if i == self.nb_classes-1:
-                self.top_max_result_p.setText(str(precision))
-                self.top_max_result_r.setText(str(rappel))
-                self.top_max_result_ap.setText(str("{:.2f}".format(np.mean(precisions))))
+                self.top_max_result_p.setText(str("{:.2f}".format(precision*100))+"%")
+                self.top_max_result_r.setText(str("{:.2f}".format(rappel*100))+"%")
+                self.top_max_result_ap.setText(str("{:.2f}".format(np.mean(precisions)*100))+"%")
                 self.label_19.setText("Top "+str(self.nb_classes))
         # Création de la courbe R/P
         plt.plot(rappels, precisions)

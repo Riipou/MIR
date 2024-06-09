@@ -7,6 +7,8 @@
 /LBP
 /HOG
 /GLCM
+/requests
+/RP_results
 __pycache__/distances.cpython-38.pyc
 __pycache__/functions.cpython-38.pyc
 /__pycache__

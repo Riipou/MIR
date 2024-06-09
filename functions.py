@@ -10,11 +10,11 @@ from skimage import io, color, img_as_ubyte
 from matplotlib import pyplot as plt
 from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
 from skimage.color import rgb2gray
-def showDialog():
+def showDialog(message, msg_title):
     msgBox = QMessageBox()
     msgBox.setIcon(QMessageBox.Information)
-    msgBox.setText("Merci de sélectionner un descripteur via le menu ci-dessus")
-    msgBox.setWindowTitle("Pas de Descripteur sélectionné")
+    msgBox.setText(message)
+    msgBox.setWindowTitle(msg_title)
     msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     returnValue = msgBox.exec()
 
