@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -79,26 +79,26 @@
        </rect>
       </property>
       <property name="text">
-       <string>Hist Couleur</string>
+       <string>BGR</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkBox_HSV">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>330</x>
         <y>0</y>
         <width>101</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Hist HSV</string>
+       <string>HSV</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkBox_GLCM">
       <property name="geometry">
        <rect>
-        <x>480</x>
+        <x>400</x>
         <y>0</y>
         <width>81</width>
         <height>21</height>
@@ -111,7 +111,7 @@
      <widget class="QCheckBox" name="checkBox_LBP">
       <property name="geometry">
        <rect>
-        <x>560</x>
+        <x>480</x>
         <y>0</y>
         <width>61</width>
         <height>21</height>
@@ -124,7 +124,7 @@
      <widget class="QCheckBox" name="checkBox_HOG">
       <property name="geometry">
        <rect>
-        <x>630</x>
+        <x>550</x>
         <y>0</y>
         <width>71</width>
         <height>21</height>

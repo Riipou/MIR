@@ -50,16 +50,16 @@ class Ui_MainWindow(object):
         self.checkBox_HistC.setGeometry(QtCore.QRect(260, 0, 121, 21))
         self.checkBox_HistC.setObjectName("checkBox_HistC")
         self.checkBox_HSV = QtWidgets.QCheckBox(self.tab)
-        self.checkBox_HSV.setGeometry(QtCore.QRect(380, 0, 101, 21))
+        self.checkBox_HSV.setGeometry(QtCore.QRect(330, 0, 101, 21))
         self.checkBox_HSV.setObjectName("checkBox_HSV")
         self.checkBox_GLCM = QtWidgets.QCheckBox(self.tab)
-        self.checkBox_GLCM.setGeometry(QtCore.QRect(480, 0, 81, 21))
+        self.checkBox_GLCM.setGeometry(QtCore.QRect(400, 0, 81, 21))
         self.checkBox_GLCM.setObjectName("checkBox_GLCM")
         self.checkBox_LBP = QtWidgets.QCheckBox(self.tab)
-        self.checkBox_LBP.setGeometry(QtCore.QRect(560, 0, 61, 21))
+        self.checkBox_LBP.setGeometry(QtCore.QRect(480, 0, 61, 21))
         self.checkBox_LBP.setObjectName("checkBox_LBP")
         self.checkBox_HOG = QtWidgets.QCheckBox(self.tab)
-        self.checkBox_HOG.setGeometry(QtCore.QRect(630, 0, 71, 21))
+        self.checkBox_HOG.setGeometry(QtCore.QRect(550, 0, 71, 21))
         self.checkBox_HOG.setObjectName("checkBox_HOG")
         self.charger = QtWidgets.QPushButton(self.tab)
         self.charger.setGeometry(QtCore.QRect(10, 20, 441, 51))
@@ -631,7 +631,8 @@ class Ui_MainWindow(object):
         self.image.setAlignment(QtCore.Qt.AlignCenter)
         
     def extractFeatures(self, MainWindow):
-        
+        if not hasattr(self, 'Dossier_images'):
+            showDialog("Merci de sélectionner votre base d'images.", "Pas de dossier ouvert")
 		# Appel de la fonction de calcul de l'histogramme de couleur BGR
         if self.Dossier_images and self.checkBox_HistC.isChecked():
             temps_debut = time.time()
@@ -796,8 +797,12 @@ class Ui_MainWindow(object):
         for i in reversed(range(self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         voisins = ""
+        if not hasattr(self, 'algo_choice'):
+            showDialog("Veuillez choisir un descripteur.", "Pas de descripteurs sélectionnés")
         if len(self.algo_choice) != 0:
             temps_debut = time.time()
+            if not fileName:
+                showDialog("Veuillez choisir une image requête.", "Pas d'image requête trouvée")
             # Generer les features de l'images requete
             req = extractReqFeatures(fileName, self.algo_choice)
 
@@ -951,14 +956,14 @@ class Ui_MainWindow(object):
         pixmap = pixmap.scaled(self.image_2.width(), self.image_2.height(),QtCore.Qt.KeepAspectRatio)
         self.image_2.setPixmap(pixmap)
         self.image_2.setAlignment(QtCore.Qt.AlignCenter)
-
+        
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.checkBox_SIFT.setText(_translate("MainWindow", "SIFT"))
         self.checkBox_ORB.setText(_translate("MainWindow", "ORB"))
-        self.checkBox_HistC.setText(_translate("MainWindow", "Hist Couleur"))
-        self.checkBox_HSV.setText(_translate("MainWindow", "Hist HSV"))
+        self.checkBox_HistC.setText(_translate("MainWindow", "BGR"))
+        self.checkBox_HSV.setText(_translate("MainWindow", "HSV"))
         self.checkBox_GLCM.setText(_translate("MainWindow", "GLCM"))
         self.checkBox_LBP.setText(_translate("MainWindow", "LBP"))
         self.checkBox_HOG.setText(_translate("MainWindow", "HOG"))
